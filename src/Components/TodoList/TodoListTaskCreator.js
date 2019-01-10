@@ -14,10 +14,10 @@ class TodoListTaskCreator extends Component {
     createNewTask(event) {
         if (event.key === 'Enter') {
 
-
+            const inputTarget = event.currentTarget;
             const data = new URLSearchParams();
             data.append('widgetId', 123);
-            data.append('title', event.currentTarget.value);
+            data.append('title', inputTarget.value);
 
             fetch('https://repetitora.net/api/JS/Tasks',
                 {
@@ -38,6 +38,7 @@ class TodoListTaskCreator extends Component {
                       isDone: result.task.done
                     }
                     this.props.onCreate(newTask);
+                    inputTarget.value='';
                 });
             //const newTask =
             //{
