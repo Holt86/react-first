@@ -23,10 +23,14 @@ class TodoList extends Component {
         }
       ],
 
-      filter: "all"
+      filter: "active"
     };
 
     //this.nextSlimHandler = this.nextSlimHandler.bind(this);
+  }
+
+  changeFilter(filterValue){
+    this.setState({filter : filterValue});
   }
 
   putTaskToState(task) {
@@ -42,6 +46,11 @@ class TodoList extends Component {
             return t.id !== id;
           })
     })
+  }
+
+  clearCompleted(){
+    let activeTask = this.state.tasks.filter(t => !t.isDone);
+    this.setState({tasks : activeTask});
   }
 
   updateTask(task) {
@@ -60,14 +69,24 @@ class TodoList extends Component {
 
   render() {
     var{tasks, filter} = this.state;
+
+    var filteredTask = [];
+    if(filter === 'all'){
+      filteredTask = tasks;
+    }else if(filter === 'active'){
+      filteredTask = tasks.filter(t => !t.isDone);
+    }else if(filter === 'completed'){
+      filteredTask = tasks.filter(t => t.isDone);
+    }
     return (
         <div className="todolist">
           <TodoListTaskCreator onCreate={this.putTaskToState.bind(this)}/>
 
-          <TasksList tasks={this.state.tasks}
+          <TasksList tasks={filteredTask}
                      onDelete={this.deleteTask.bind(this)}
                      onUpdate={this.updateTask.bind(this)}/>
-          <TodoListFooter tasks={tasks} filter={filter}/>
+          <TodoListFooter tasks={tasks} filter={filter} onFilterChanged={this.changeFilter.bind(this)}
+                          onClearCompleted={this.clearCompleted.bind(this)}/>
         </div>
     );
   }

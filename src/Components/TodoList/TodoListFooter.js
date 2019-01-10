@@ -7,11 +7,11 @@ class TodoListFooter extends Component {
   }
 
   handleFilterChanged(e) {
-    alert(e.currentTarget.dataset.value);
+    this.props.onFilterChanged(e.currentTarget.dataset.value);
   }
 
   render() {
-    var{tasks, filter} = this.props;
+    var{tasks, filter, onClearCompleted} = this.props;
 
     return (
         <div className="todolist-footer">
@@ -30,7 +30,9 @@ class TodoListFooter extends Component {
                     onClick={this.handleFilterChanged.bind(this)}>Completed
             </button>
           </div>
-          <div>Clear completed</div>
+          <div>
+            <span onClick={onClearCompleted}>Clear completed</span>
+          </div>
         </div>
     );
   }
