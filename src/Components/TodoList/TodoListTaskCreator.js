@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import './TodoList.css';
+//import './TodoList.css';
+import {createTask} from './Services.js'
 
 class TodoListTaskCreator extends Component {
 
@@ -15,21 +16,8 @@ class TodoListTaskCreator extends Component {
         if (event.key === 'Enter') {
 
             const inputTarget = event.currentTarget;
-            const data = new URLSearchParams();
-            data.append('widgetId', 123);
-            data.append('title', inputTarget.value);
 
-            fetch('https://repetitora.net/api/JS/Tasks',
-                {
-                    method: 'POST',
-                    body: data,
-                    headers: {
-                        'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-                        'accept': "application/json"
-                    },
-                    mode: 'cors'
-                })
-                .then(result => result.json())
+          createTask(inputTarget.value, 123)
                 .then(result => {
                     const newTask =
                     {
@@ -40,16 +28,6 @@ class TodoListTaskCreator extends Component {
                     this.props.onCreate(newTask);
                     inputTarget.value='';
                 });
-            //const newTask =
-            //{
-            //  id: this.newIndex,
-            //  title: event.currentTarget.value,
-            //  isDone: false
-            //}
-            //
-            //this.props.onCreate(newTask)
-            //event.currentTarget.value = '';
-            //this.newIndex++;
         }
     }
 

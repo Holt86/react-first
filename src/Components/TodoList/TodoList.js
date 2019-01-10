@@ -12,10 +12,10 @@ class TodoList extends Component {
         this.state = {
             tasks: [],
 
-            filter: "active"
+            filter: "all"
         };
 
-        fetch('https://repetitora.net/api/JS/Tasks?widgetId=123',
+        fetch('https://repetitora.net/api/JS/Tasks?widgetId=123&count=30',
             {
                 method: 'GET',
                 headers: {
@@ -38,10 +38,6 @@ class TodoList extends Component {
                     tasks: getTasks
                 })
             });
-
-
-
-        //this.nextSlimHandler = this.nextSlimHandler.bind(this);
     }
 
     changeFilter(filterValue) {
