@@ -3,6 +3,7 @@ import './TodoList.css';
 import TodoListFooter from './TodoListFooter.js'
 import TodoListTaskCreator from './TodoListTaskCreator.js'
 import TasksList from './TasksList.js'
+import {getTasks} from './Services.js'
 
 class TodoList extends Component {
 
@@ -15,16 +16,7 @@ class TodoList extends Component {
             filter: "all"
         };
 
-        fetch('https://repetitora.net/api/JS/Tasks?widgetId=123&count=30',
-            {
-                method: 'GET',
-                headers: {
-                    'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-                    'accept': "application/json"
-                },
-                mode: 'cors'
-            })
-            .then(result => result.json())
+        getTasks(123)
             .then(result => {
                 var getTasks = result.map(item => {
                     return {
