@@ -20,13 +20,13 @@ class TodoListFooter extends Component {
               items left</span>
           </div>
           <div className="buttons">
-            <button className={filter == 'all' ? 'selected' : ''} data-value="all"
+            <button className={filter === 'all' ? 'selected' : ''} data-value="all"
                     onClick={this.handleFilterChanged.bind(this)}>All
             </button>
-            <button className={filter == 'active' ? 'selected' : ''} data-value="active"
+            <button className={filter === 'active' ? 'selected' : ''} data-value="active"
                     onClick={this.handleFilterChanged.bind(this)}>Active
             </button>
-            <button className={filter == 'completed' ? 'selected' : ''} data-value="completed"
+            <button className={filter === 'completed' ? 'selected' : ''} data-value="completed"
                     onClick={this.handleFilterChanged.bind(this)}>Completed
             </button>
           </div>

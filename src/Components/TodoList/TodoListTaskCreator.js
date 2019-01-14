@@ -6,10 +6,6 @@ class TodoListTaskCreator extends Component {
 
     constructor(props) {
         super(props);
-
-        //this.newIndex = 2;
-
-        //this.nextSlimHandler = this.nextSlimHandler.bind(this);
     }
 
     createNewTask(event) {

@@ -1,19 +1,83 @@
-import React, { Component } from 'react';
+import React, {Component } from 'react';
 import './TodoList.css';
 import TodoListFooter from './TodoListFooter.js'
 import TodoListTaskCreator from './TodoListTaskCreator.js'
 import TasksList from './TasksList.js'
 import {getTasks} from './Services.js'
+import {createStore, combineReducers} from 'redux';
 
 class TodoList extends Component {
 
     constructor() {
         super();
 
+
+        var todoListState = {
+            tasks: [{
+                id: 1,
+                title: "learn CSS",
+                isDone: false
+            }],
+            filter: "all"
+        };
+
+        const changeFilterAction = {
+            type: 'CHANGE_FILTER'
+        };
+
+        const createNewTaskAction = {
+            type: 'CREATE_NEW_TASK',
+            id: 2,
+            title: 'learn react',
+            isDone: true
+        };
+
+        function todoListReducer(oldState = { tasks: [{
+            id: 1,
+            title: "learn CSS",
+            isDone: false
+        }],
+            filter: "all"}, action) {
+            switch (action.type) {
+                case 'CHANGE_FILTER':
+                    return {
+                        ...oldState, filter: 'completed'
+                    };
+                case 'CREATE_NEW_TASK':
+                    return {
+                        ...oldState,
+                        tasks: [...oldState.tasks, {
+                            id: action.id,
+                            title: action.title,
+                            isDone: action.isDone
+                        }]
+                    };
+                default:
+                    return oldState;
+            }
+        };
+
+        //var reducers = combineReducers({todoListReducer});
+        //var store = createStore(reducers);
+        var store = createStore(todoListReducer)
+
+        var state1 = store.getState();
+        console.log('state: ', state1);
+
+        store.dispatch(changeFilterAction);
+        var state2 = store.getState();
+        console.log('state: ', state2);
+
+
+
+
+
+
+
         this.state = {
             tasks: [],
 
-            filter: "all"
+            filter: 'all'
         };
 
         getTasks(123)
