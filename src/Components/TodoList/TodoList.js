@@ -5,94 +5,35 @@ import TodoListTaskCreator from './TodoListTaskCreator.js'
 import TasksList from './TasksList.js'
 import {getTasks} from './Services.js'
 import {createStore, combineReducers} from 'redux';
+import {todoListReducer} from './redux/todolist-reducers';
+import {changeFilterAction, createNewTaskAction, putTasksAction, clearTaskCompleted} from './redux/todolist-actions';
 
 class TodoList extends Component {
 
     constructor() {
         super();
-
-
-        var todoListState = {
-            tasks: [{
-                id: 1,
-                title: "learn CSS",
-                isDone: false
-            }],
-            filter: "all"
-        };
-
-        const changeFilterAction = {
-            type: 'CHANGE_FILTER'
-        };
-
-        const createNewTaskAction = {
-            type: 'CREATE_NEW_TASK',
-            id: 2,
-            title: 'learn react',
-            isDone: true
-        };
-
-        function todoListReducer(oldState = { tasks: [{
-            id: 1,
-            title: "learn CSS",
-            isDone: false
-        }],
-            filter: "all"}, action) {
-            switch (action.type) {
-                case 'CHANGE_FILTER':
-                    return {
-                        ...oldState, filter: 'completed'
-                    };
-                case 'CREATE_NEW_TASK':
-                    return {
-                        ...oldState,
-                        tasks: [...oldState.tasks, {
-                            id: action.id,
-                            title: action.title,
-                            isDone: action.isDone
-                        }]
-                    };
-                default:
-                    return oldState;
-            }
-        };
-
         //var reducers = combineReducers({todoListReducer});
         //var store = createStore(reducers);
-        var store = createStore(todoListReducer)
+        this.store = createStore(todoListReducer);
+        this.state = this.store.getState();
 
-        var state1 = store.getState();
-        console.log('state: ', state1);
+        this.store.subscribe(() => {
+            let newState = this.store.getState();
+            this.setState(newState);
+        })
 
-        store.dispatch(changeFilterAction);
-        var state2 = store.getState();
-        console.log('state: ', state2);
-
-
-
-
-
-
-
-        this.state = {
-            tasks: [],
-
-            filter: 'all'
-        };
 
         getTasks(123)
             .then(result => {
-                var getTasks = result.map(item => {
+                var tasks = result.map(item => {
                     return {
                         id: item.id,
                         title: item.title,
                         isDone: item.done
                     };
                 });
-
-                this.setState({
-                    tasks: getTasks
-                })
+                let action = putTasksAction(tasks);
+                this.store.dispatch(action);
             });
     }
 
@@ -116,8 +57,8 @@ class TodoList extends Component {
     }
 
     clearCompleted() {
-        let activeTask = this.state.tasks.filter(t => !t.isDone);
-        this.setState({tasks: activeTask});
+        let action = clearTaskCompleted();
+        this.store.dispatch(action)
     }
 
     updateTask(task) {
@@ -131,7 +72,6 @@ class TodoList extends Component {
         });
 
         this.setState({tasks: newTasks});
-
     }
 
     render() {
