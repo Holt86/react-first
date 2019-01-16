@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './TodoList.css';
-import {updateTask} from './Services.js'
+import {updateTaskOnServer, deleteTaskOnServer} from './Services.js'
 
 class Task extends Component {
 
@@ -16,13 +16,15 @@ class Task extends Component {
   }
 
   deleteTask(event) {
-    this.parentDeleteCallback(this.props.task.id)
+    let taskId = this.props.task.id;
+    deleteTaskOnServer(taskId, 123);
+    this.parentDeleteCallback(taskId)
   }
 
   toggleTaskStatus(event) {
     let task = JSON.parse(JSON.stringify(this.props.task));
     task.isDone = !task.isDone;
-    updateTask(task.id, 123, task.title, task.isDone)
+    updateTaskOnServer(task.id, 123, task.title, task.isDone)
         .then(t => {
           this.parentUpdateCallback(task);
         });
@@ -38,7 +40,7 @@ class Task extends Component {
     const newTitle = event.currentTarget.value;
     let task = JSON.parse(JSON.stringify(this.props.task));
     task.title = newTitle;
-    updateTask(task.id, 123, task.title, task.isDone)
+    updateTaskOnServer(task.id, 123, task.title, task.isDone)
         .then(t => {
           this.setState({
             editMode: false
@@ -52,10 +54,6 @@ class Task extends Component {
       title: event.currentTarget.value
     })
   }
-
-
-
-
 
   render(){
     let {isDone} = this.props.task;

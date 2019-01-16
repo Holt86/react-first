@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 //import './TodoList.css';
-import {createTask} from './Services.js'
+import {createTaskOnServer} from './Services.js'
 
 class TodoListTaskCreator extends Component {
 
@@ -13,7 +13,7 @@ class TodoListTaskCreator extends Component {
 
             const inputTarget = event.currentTarget;
 
-          createTask(inputTarget.value, 123)
+          createTaskOnServer(inputTarget.value, 123)
                 .then(result => {
                     const newTask =
                     {

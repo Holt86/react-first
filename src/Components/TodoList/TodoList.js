@@ -3,10 +3,10 @@ import './TodoList.css';
 import TodoListFooter from './TodoListFooter.js'
 import TodoListTaskCreator from './TodoListTaskCreator.js'
 import TasksList from './TasksList.js'
-import {getTasks} from './Services.js'
+import {getTasksFromServer} from './Services.js'
 import {createStore, combineReducers} from 'redux';
 import {todoListReducer} from './redux/todolist-reducers';
-import {changeFilterAction, createNewTaskAction, putTasksAction, clearTaskCompleted} from './redux/todolist-actions';
+import {changeFilterAction, createTaskAction, putTasksFromServer, clearTasksCompleted, deleteTaskAction, updateTaskAction} from './redux/todolist-actions';
 
 class TodoList extends Component {
 
@@ -20,10 +20,9 @@ class TodoList extends Component {
         this.store.subscribe(() => {
             let newState = this.store.getState();
             this.setState(newState);
-        })
+        });
 
-
-        getTasks(123)
+        getTasksFromServer(123)
             .then(result => {
                 var tasks = result.map(item => {
                     return {
@@ -32,46 +31,39 @@ class TodoList extends Component {
                         isDone: item.done
                     };
                 });
-                let action = putTasksAction(tasks);
+                let action = putTasksFromServer(tasks);
                 this.store.dispatch(action);
             });
     }
 
     changeFilter(filterValue) {
-        this.setState({filter: filterValue});
+        let action = changeFilterAction(filterValue);
+        this.store.dispatch(action);
+        //this.setState({filter: filterValue});
     }
 
     putTaskToState(task) {
-        this.setState({
-            tasks: [...this.state.tasks, task]
-        });
+        let action = createTaskAction(task);
+        this.store.dispatch(action);
+        //this.setState({
+        //    tasks: [...this.state.tasks, task]
+        //});
+
     }
 
     deleteTask(id) {
-        this.setState({
-            tasks: this.state.tasks
-                .filter((t) => {
-                    return t.id !== id;
-                })
-        })
+        let action = deleteTaskAction(id);
+        this.store.dispatch(action)
     }
 
     clearCompleted() {
-        let action = clearTaskCompleted();
+        let action = clearTasksCompleted();
         this.store.dispatch(action)
     }
 
     updateTask(task) {
-        const newTasks = JSON.parse(JSON.stringify(this.state.tasks));
-
-        newTasks.forEach((t, index) => {
-            if (t.id === task.id) {
-                newTasks[index] = task;
-                return;
-            }
-        });
-
-        this.setState({tasks: newTasks});
+        let action = updateTaskAction(task);
+        this.store.dispatch(action);
     }
 
     render() {
