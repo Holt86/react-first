@@ -19,7 +19,6 @@ export function createTaskOnServer(title, widgetId) {
     const data = new URLSearchParams();
     data.append('widgetId', widgetId);
     data.append('title', title);
-
     return requestData(url, 'POST', data);
 }
 
@@ -40,6 +39,5 @@ export function deleteTaskOnServer(taskId, widgetId) {
 }
 export function getTasksFromServer(widgetId) {
     let reqUrl = url + '?widgetId=' + widgetId + '&count=30';
-
     return requestData(reqUrl, 'GET')
 }

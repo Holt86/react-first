@@ -1,9 +1,9 @@
 import React, {Component } from 'react';
 import './TodoList.css';
-import TodoListFooter from './TodoListFooter.js'
-import TodoListTaskCreator from './TodoListTaskCreator.js'
-import TasksList from './TasksList.js'
-import {getTasksFromServer} from './Services.js'
+import TodoListFooter from './TodoListFooter';
+import {TodoListFormContainer} from './TodoListTaskCreator';
+import TasksList from './TasksList';
+import {getTasksFromServer} from './Services';
 import {createStore, combineReducers} from 'redux';
 import {todoListReducer} from './redux/todolist-reducers';
 import {changeFilterAction, createTaskAction, putTasksFromServer, clearTasksCompleted, deleteTaskAction, updateTaskAction} from './redux/todolist-actions';
@@ -79,7 +79,8 @@ class TodoList extends Component {
         }
         return (
             <div className="todolist">
-                <TodoListTaskCreator onCreate={this.putTaskToState.bind(this)}/>
+                {/*<TodoListTaskCreator onCreate={this.putTaskToState.bind(this)}/>*/}
+                <TodoListFormContainer onCreate={this.putTaskToState.bind(this)}/>
 
                 <TasksList tasks={filteredTask}
                            onDelete={this.deleteTask.bind(this)}
