@@ -2,9 +2,21 @@ import React, {Component } from 'react';
 import {createTaskOnServer} from './Services.js';
 
 
-export class TodoListFormContainer extends Component{
+class TodoListFormContainer extends Component{
+
+    constructor(props){
+        super(props);
+
+        this.state = {
+            title : '',
+            isWaiting: false
+        }
+    }
 
     createTask(taskTitle) {
+        this.setState({
+            isWaiting: true
+        });
         createTaskOnServer(taskTitle, 123)
             .then(result => {
                 const newTask =
@@ -17,13 +29,14 @@ export class TodoListFormContainer extends Component{
             });
     }
         render(){
+            let {title, isWaiting} = this.state;
             return(
-                <TodoListTaskCreator createTask={this.createTask.bind(this)} />
+                <TaskCreatorPresentation createTask={this.createTask.bind(this)} title={title} isWaiting={isWaiting} />
             );
         }
 }
 
-const TodoListTaskCreator = (props) =>{
+const TaskCreatorPresentation = (props) =>{
 
     const createNewTask = (event) => {
         if (event.key === 'Enter') {
@@ -33,10 +46,12 @@ const TodoListTaskCreator = (props) =>{
     };
     return (
         <div className="header">
-            <input onKeyPress={createNewTask}/>
+            <input onKeyPress={createNewTask} value={props.title} disabled={props.isWaiting
+            }/>
         </div>
 
     );
 };
 
-export default TodoListTaskCreator;
+export default TodoListFormContainer;
+
