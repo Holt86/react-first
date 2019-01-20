@@ -1,7 +1,7 @@
 import React, {Component } from 'react';
 import './TodoList.css';
 import TodoListFooter from './TodoListFooter';
-import {TodoListFormContainer} from './TodoListTaskCreator';
+import TodoListFormContainer from './TodoListFormContainer';
 import TasksList from './TasksList';
 import {getTasksFromServer} from './Services';
 import {createStore, combineReducers} from 'redux';

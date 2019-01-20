@@ -15,7 +15,8 @@ class TodoListFormContainer extends Component{
 
     createTask(taskTitle) {
         this.setState({
-            isWaiting: true
+            isWaiting: true,
+            title: taskTitle
         });
         createTaskOnServer(taskTitle, 123)
             .then(result => {
@@ -26,6 +27,10 @@ class TodoListFormContainer extends Component{
                     isDone: result.task.done
                 };
                 this.props.onCreate(newTask);
+                this.setState({
+                    isWaiting: false,
+                    title: ''
+                });
             });
     }
         render(){
@@ -35,6 +40,7 @@ class TodoListFormContainer extends Component{
             );
         }
 }
+export default TodoListFormContainer;
 
 const TaskCreatorPresentation = (props) =>{
 
@@ -46,12 +52,11 @@ const TaskCreatorPresentation = (props) =>{
     };
     return (
         <div className="header">
-            <input onKeyPress={createNewTask} value={props.title} disabled={props.isWaiting
-            }/>
+            <input onKeyPress={createNewTask} value={props.title} disabled={props.isWaiting}/>
         </div>
 
     );
 };
 
-export default TodoListFormContainer;
+
 
