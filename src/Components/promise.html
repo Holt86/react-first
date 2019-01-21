@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<button id="button"></button>
+
+<script>
+    var button = document.getElementById('button');
+
+
+    function applyForVisa(documents) {
+        console.log("Ждем визу...");
+        let promise = new Promise(function (resolve, reject) {
+            setTimeout(function () {
+                Math.random() > .5 ? resolve({id: 123, name: 'My viza'}) : reject('В визе отказано');
+            }, 2000)
+        });
+        return promise;
+    }
+    ;
+
+    function bookHotel(viza){
+        console.log(viza);
+        console.log('Бронируем отель');
+        return new Promise(function(resolve, reject){Math.random() > .8 ? resolve(viza) : reject('В отеле нет мест');});
+
+    }
+
+    function buyTickets(viza){
+        console.log(viza);
+        console.log('Покупаем билеты');
+        return new Promise(function(resolve, reject){Math.random() > .5 ? resolve(viza) : reject('В нет билетов');});
+    }
+
+    button.onclick = function () {
+        applyForVisa({})
+                .then(viza => {console.info('Виза получена');
+                                  return viza;})
+                .then(bookHotel)
+                .then(buyTickets)
+                .catch(cause => console.error(cause));
+    }
+
+//    button.onclick = function () {
+//        applyForVisa({}, function (viza) {
+//            console.info('Виза получена');
+//        }, function (cause) {
+//            console.error(cause);
+//        });
+//    }
+</script>
+
+</body>
+</html>
