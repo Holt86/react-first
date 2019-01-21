@@ -13,6 +13,12 @@ class TodoListFormContainer extends Component{
         }
     }
 
+    changeTitle(title){
+        this.setState({
+            title: title
+        });
+    }
+
     createTask(taskTitle) {
         this.setState({
             isWaiting: true,
@@ -36,7 +42,7 @@ class TodoListFormContainer extends Component{
         render(){
             let {title, isWaiting} = this.state;
             return(
-                <TaskCreatorPresentation createTask={this.createTask.bind(this)} title={title} isWaiting={isWaiting} />
+                <TaskCreatorPresentation createTask={this.createTask.bind(this)} changeTitle={this.changeTitle.bind(this)} isWaiting={isWaiting} />
             );
         }
 }
@@ -52,7 +58,7 @@ const TaskCreatorPresentation = (props) =>{
     };
     return (
         <div className="header">
-            <input onKeyPress={createNewTask} value={props.title} disabled={props.isWaiting}/>
+            <input onKeyPress={createNewTask} onKeyUp={e => props.changeTitle(e.currentTarget.value)} disabled={props.isWaiting}/>
         </div>
 
     );

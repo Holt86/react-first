@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import './TodoList.css';
+import {changeFilterAction, clearTasksCompleted} from './redux/todolist-actions';
+
 class TodoListFooter extends Component {
 
   constructor(props) {
@@ -7,7 +9,11 @@ class TodoListFooter extends Component {
   }
 
   handleFilterChanged(e) {
-    this.props.onFilterChanged(e.currentTarget.dataset.value);
+    this.props.store.dispatch(changeFilterAction(e.currentTarget.dataset.value));
+  }
+
+  clearCompleted(){
+    this.props.store.dispatch(clearTasksCompleted());
   }
 
   render() {
@@ -31,7 +37,7 @@ class TodoListFooter extends Component {
             </button>
           </div>
           <div>
-            <span onClick={onClearCompleted}>Clear completed</span>
+            <span onClick={this.clearCompleted.bind(this)}>Clear completed</span>
           </div>
         </div>
     );

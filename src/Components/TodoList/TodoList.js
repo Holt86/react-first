@@ -36,33 +36,8 @@ class TodoList extends Component {
             });
     }
 
-    changeFilter(filterValue) {
-        let action = changeFilterAction(filterValue);
-        this.store.dispatch(action);
-        //this.setState({filter: filterValue});
-    }
-
     putTaskToState(task) {
         let action = createTaskAction(task);
-        this.store.dispatch(action);
-        //this.setState({
-        //    tasks: [...this.state.tasks, task]
-        //});
-
-    }
-
-    deleteTask(id) {
-        let action = deleteTaskAction(id);
-        this.store.dispatch(action)
-    }
-
-    clearCompleted() {
-        let action = clearTasksCompleted();
-        this.store.dispatch(action)
-    }
-
-    updateTask(task) {
-        let action = updateTaskAction(task);
         this.store.dispatch(action);
     }
 
@@ -79,14 +54,10 @@ class TodoList extends Component {
         }
         return (
             <div className="todolist">
-                {/*<TodoListTaskCreator onCreate={this.putTaskToState.bind(this)}/>*/}
                 <TodoListFormContainer onCreate={this.putTaskToState.bind(this)}/>
 
-                <TasksList tasks={filteredTask}
-                           onDelete={this.deleteTask.bind(this)}
-                           onUpdate={this.updateTask.bind(this)}/>
-                <TodoListFooter tasks={tasks} filter={filter} onFilterChanged={this.changeFilter.bind(this)}
-                                onClearCompleted={this.clearCompleted.bind(this)}/>
+                <TasksList tasks={filteredTask} store={this.store} />
+                <TodoListFooter tasks={tasks} filter={filter} store={this.store} />
             </div>
         );
     }

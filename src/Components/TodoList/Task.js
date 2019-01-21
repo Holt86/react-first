@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './TodoList.css';
 import {updateTaskOnServer, deleteTaskOnServer} from './Services.js'
+import {deleteTaskAction, updateTaskAction} from './redux/todolist-actions';
 
 class Task extends Component {
 
@@ -11,14 +12,13 @@ class Task extends Component {
       title: props.task.title
     };
 
-    this.parentDeleteCallback = props.deleteCallback;
-    this.parentUpdateCallback = props.updateCallback;
+    this.store = this.props.store;
   }
 
   deleteTask(event) {
     let taskId = this.props.task.id;
     deleteTaskOnServer(taskId, 123);
-    this.parentDeleteCallback(taskId)
+    this.store.dispatch(deleteTaskAction(taskId));
   }
 
   toggleTaskStatus(event) {
@@ -26,14 +26,8 @@ class Task extends Component {
     task.isDone = !task.isDone;
     updateTaskOnServer(task.id, 123, task.title, task.isDone)
         .then(t => {
-          this.parentUpdateCallback(task);
+          this.store.dispatch(updateTaskAction(task));
         });
-  }
-
-  goToEditMode(){
-    this.setState({
-      editMode : true
-    })
   }
 
   saveTitle(event){
@@ -45,13 +39,19 @@ class Task extends Component {
           this.setState({
             editMode: false
           });
-          this.parentUpdateCallback(task);
+          this.store.dispatch(updateTaskAction(task));
         });
   }
 
   changeTitle(event){
     this.setState({
       title: event.currentTarget.value
+    })
+  }
+
+  goToEditMode(){
+    this.setState({
+      editMode : true
     })
   }
 
